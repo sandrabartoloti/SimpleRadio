@@ -1,0 +1,8 @@
+{
+  "id": "pentatonix",
+  "name": "Pentatonix Christmas",
+  "sourceDirectory": "~/Documents/Music/Pentatonix",
+  "extensions": ["mp3", "m4a"],
+  "order": "filename",
+  "repeat": "all"
+}

@@ -344,6 +344,7 @@ public class MainActivity extends Activity {
         addStation("Ambient", "https://s2.we4stream.com/listen/loca_ambient/live", CATEGORY_INTERNATIONAL);
         addStation("Cadena Dial", "https://playerservices.streamtheworld.com/api/livestream-redirect/CADENADIAL.mp3", CATEGORY_INTERNATIONAL);
         addStation("Chill", "https://ice5.somafm.com/groovesalad-256-mp3", CATEGORY_INTERNATIONAL);
+        addStation("Pentatonix Christmas", LocalPlaylist.PENTATONIX, CATEGORY_INTERNATIONAL);
         addStation("Christmas 1", "https://radio1.streamserver.link/radio/8070/hcr-aac-hq", CATEGORY_INTERNATIONAL);
         addStation("Christmas 2", "https://stream.musiquose.fr/proxy/merrychristmas?mp=/stream", CATEGORY_INTERNATIONAL);
         addStation("Christmas 3", "https://streams.90s90s.de/xmas/mp3-128/streams.90s90s.de/", CATEGORY_INTERNATIONAL);
@@ -3277,7 +3278,21 @@ public class MainActivity extends Activity {
         updatePhoneBottomUi();
 
         try {
-            mediaController.setMediaItem(createMediaItem(station));
+            if (LocalPlaylist.PENTATONIX.equals(station.url)) {
+                java.util.List<MediaItem> tracks;
+                try {
+                    tracks = LocalPlaylist.load(this, station.id, createMediaItem(station).mediaMetadata);
+                } catch (Exception error) {
+                    statusText.setText("Unable to load Pentatonix playlist");
+                    return;
+                }
+                mediaController.setShuffleModeEnabled(false);
+                mediaController.setRepeatMode(Player.REPEAT_MODE_ALL);
+                mediaController.setMediaItems(tracks, 0, 0);
+            } else {
+                mediaController.setRepeatMode(Player.REPEAT_MODE_OFF);
+                mediaController.setMediaItem(createMediaItem(station));
+            }
             syncTvNowPlayingStation();
             mediaController.prepare();
             mediaController.play();

@@ -48,3 +48,40 @@ dependencies {
         implementation "com.squareup.retrofit2:converter-gson:2.11.0"
     }
 }
+
+// Bundle local audio at build time; neither source audio nor generated assets enter Git.
+def playlistConfigFile = file('playlists/pentatonix.json')
+def playlistConfig = new groovy.json.JsonSlurper().parse(playlistConfigFile)
+def playlistSource = file(playlistConfig.sourceDirectory.toString().replaceFirst('^~/',
+        java.util.regex.Matcher.quoteReplacement(System.getProperty('user.home') + '/')))
+def generatedPlaylistAssets = layout.buildDirectory.dir('generated/localPlaylistAssets')
+def generateLocalPlaylists = tasks.register('generateLocalPlaylists') {
+    inputs.file(playlistConfigFile)
+    inputs.files(fileTree(playlistSource))
+    outputs.dir(generatedPlaylistAssets)
+    doLast {
+        def songs = fileTree(playlistSource).files.findAll {
+            it.isFile() && playlistConfig.extensions.contains(it.name.tokenize('.').last().toLowerCase(java.util.Locale.ROOT))
+        }.sort { a, b ->
+            def comparison = a.name.compareToIgnoreCase(b.name)
+            comparison != 0 ? comparison : a.path.compareTo(b.path)
+        }
+        if (songs.isEmpty()) {
+            throw new GradleException("No MP3/M4A songs found in ${playlistSource}. Add your Pentatonix files before building.")
+        }
+        def output = generatedPlaylistAssets.get().asFile
+        delete(output)
+        def folder = new File(output, 'playlists/' + playlistConfig.id)
+        folder.mkdirs()
+        def tracks = songs.withIndex().collect { song, index ->
+            def extension = song.name.tokenize('.').last().toLowerCase(java.util.Locale.ROOT)
+            def filename = String.format(java.util.Locale.ROOT, '%04d.%s', index, extension)
+            java.nio.file.Files.copy(song.toPath(), new File(folder, filename).toPath())
+            [title: song.name.replaceFirst(/\.[^.]+$/, ''), uri: "asset:///playlists/${playlistConfig.id}/${filename}"]
+        }
+        new File(folder, 'playlist.json').text = groovy.json.JsonOutput.prettyPrint(
+                groovy.json.JsonOutput.toJson([name: playlistConfig.name, tracks: tracks]))
+    }
+}
+android.sourceSets.main.assets.srcDir(generatedPlaylistAssets.get().asFile)
+tasks.named('preBuild').configure { dependsOn(generateLocalPlaylists) }

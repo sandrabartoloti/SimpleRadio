@@ -13,3 +13,7 @@ app/build/
 *.pem
 .env
 .env.*
+
+# Local playlist audio (generated playlist assets live under app/build/)
+*.mp3
+*.m4a

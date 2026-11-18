@@ -31,3 +31,16 @@ JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home" ./gradle
 
 The APK is written to `app/build/outputs/apk/debug/app-debug.apk`.
 Keep `local.properties` machine-specific; its `sdk.dir` must point to your installed Android SDK.
+
+## Pentatonix Christmas local playlist
+
+The Global list includes Pentatonix Christmas immediately before Christmas 1.
+Before building, place your MP3/M4A files in `~/Documents/Music/Pentatonix`, or edit
+`sourceDirectory` in `app/playlists/pentatonix.json`. Subfolders are included.
+The build generates track titles from filenames, sorts filenames alphabetically
+(case-insensitive), and packages the audio and manifest as APK assets. The existing
+player plays the list in order and repeats it after the last song.
+
+An empty/missing audio folder fails the build with a descriptive message. Generated
+files live in `app/build/generated/localPlaylistAssets`; audio and generated files
+are excluded from Git. No network is needed to play the packaged playlist.
