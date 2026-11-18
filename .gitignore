@@ -1,0 +1,15 @@
+.gradle/
+build/
+local.properties
+*.iml
+.idea/
+app/build/
+
+# Local files and signing credentials
+.DS_Store
+*.jks
+*.keystore
+*.p8
+*.pem
+.env
+.env.*

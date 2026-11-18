@@ -1,0 +1,50 @@
+plugins {
+    id "com.android.application"
+}
+
+// Only the public HTTPS endpoint belongs in the APK, never an Apple key or JWT.
+def shazamTokenEndpoint = providers.gradleProperty("SHAZAM_TOKEN_ENDPOINT").orElse("").get()
+def shazamSdk = file("libs/shazamkit-android-release.aar")
+def shazamAvailable = shazamSdk.isFile()
+
+android {
+    namespace "com.sandra.radiotv"
+    compileSdk 36
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    // Compile exactly one implementation; the optional Apple SDK must not block radio builds.
+    sourceSets {
+        main.java.srcDir(shazamAvailable ? "src/shazam/java" : "src/noShazam/java")
+    }
+
+    defaultConfig {
+        applicationId "com.sandra.radiotv"
+        minSdk 23
+        targetSdk 36
+        versionCode 1
+        versionName "2.0"
+        buildConfigField "String", "SHAZAM_TOKEN_ENDPOINT", groovy.json.JsonOutput.toJson(shazamTokenEndpoint)
+        buildConfigField "boolean", "SHAZAM_SDK_AVAILABLE", shazamAvailable.toString()
+    }
+}
+
+dependencies {
+    def media3_version = "1.11.0"
+    implementation "androidx.media3:media3-exoplayer:$media3_version"
+    implementation "androidx.media3:media3-exoplayer-hls:$media3_version"
+    implementation "androidx.media3:media3-session:$media3_version"
+
+    // Download the official ShazamKit 2.1.1 Android AAR from Apple (see SHAZAMKIT_SETUP.md).
+    // AGP 9 already provides built-in Kotlin support for the small SDK bridge.
+    if (shazamAvailable) {
+        implementation files(shazamSdk)
+        implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0"
+        implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0"
+        implementation "com.squareup.okhttp3:okhttp:4.12.0"
+        implementation "com.squareup.retrofit2:retrofit:2.11.0"
+        implementation "com.squareup.retrofit2:converter-gson:2.11.0"
+    }
+}
