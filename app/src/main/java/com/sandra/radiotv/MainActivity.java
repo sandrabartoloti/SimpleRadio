@@ -3756,11 +3756,11 @@ public class MainActivity extends Activity {
             "Snowy Mountains", "Campfire", "Thunderstorm", "Falling Leaves",
             "Minimal Digital Clock", "Analog Gold Clock", "Flip Clock", "Dot Matrix Clock",
             "Neon Clock", "Orbit Clock", "Word Clock", "Ambient Clock", "Haunted Night",
-            "Pumpkin Graveyard", "Ghostly Mansion", "Witching Hour", "Skeleton Party", "Pumpkin King", "Happy Birthday Ana", "Christmas Village", "Christmas Village Animated"
+            "Pumpkin Graveyard", "Ghostly Mansion", "Witching Hour", "Skeleton Party", "Pumpkin King", "Happy Birthday Ana", "Christmas Village", "Christmas Village Animated", "Cozy Christmas Fireplace", "Snowy Christmas Retreat", "Christmas Forest Lodge", "Christmas Bakery Lane"
     };
 
     private class ScreensaverView extends View {
-        static final int MODE_COUNT = 80;
+        static final int MODE_COUNT = 84;
         private final Paint backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private final Paint circlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private final Paint barPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -3785,6 +3785,95 @@ public class MainActivity extends Activity {
         private final float[] animatedChimneys = {638,220, 1020,255, 1290,174};
         private final Runnable animatedVillageFrame = () -> {
             if (isAttachedToWindow() && this.mode == 79) invalidate();
+        };
+        private android.graphics.Bitmap cozyBackground;
+        private android.graphics.Bitmap cozyHearthMask;
+        private final Paint cozyPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
+        private final Path cozyFlame = new Path();
+        private final Path cozyOpening = new Path();
+        private final Path cozyLogs = new Path();
+        private final android.graphics.Shader cozyFlameGradient = new android.graphics.LinearGradient(
+                0, 0, 0, -1, new int[]{0xFFFFE6A1, 0xFFFFBA39, 0xEDEF6415, 0x006F1C09},
+                new float[]{0, .28f, .65f, 1}, android.graphics.Shader.TileMode.CLAMP);
+        private final float[] cozyBulbs = {
+                1199,15, 1245,27, 1208,54, 1267,76, 1163,107, 1213,105, 1265,123,
+                1117,154, 1178,207, 1233,195, 1326,199, 1157,263, 1228,268,
+                1368,281, 1100,334, 1197,333, 1283,343, 1369,324, 1082,385,
+                1131,414, 1249,445, 1348,413, 1377,455, 1065,474, 1180,506,
+                1311,514, 1414,500, 1050,559, 1158,577, 1261,588, 1381,568,
+                1036,633, 1102,666, 1231,656, 1414,621, 1405,733, 1069,794,
+                398,60, 445,112, 490,70, 549,24, 577,75, 619,130, 632,172,
+                651,220, 582,283, 530,319, 432,284, 399,211, 372,131,
+                208,400, 307,428, 386,475, 444,433, 499,406, 594,449,
+                695,430, 771,418, 763,518, 730,540, 780,604, 742,665,
+                212,497, 192,555, 248,591, 182,686};
+        private final float[] cozyCandles = {284,119, 718,175, 384,360, 650,378,
+                1048,874, 1086,851, 1110,910, 1228,867, 1235,915, 1323,915, 1372,897, 1363,871};
+        private final Runnable cozyFrame = () -> {
+            if (isAttachedToWindow() && this.mode == 80) invalidate();
+        };
+        private android.graphics.Bitmap retreatBackground;
+        private final Paint retreatPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
+        private final Path retreatWindow = new Path();
+        private final Path retreatStove = new Path();
+        private final Path retreatFlame = new Path();
+        private final android.graphics.Shader retreatFireBed = new android.graphics.LinearGradient(
+                0, 495, 0, 606, 0xFF190B06, 0xFF672409, android.graphics.Shader.TileMode.CLAMP);
+        private final float[] retreatLights = {483,273, 450,296, 441,335, 424,373,
+                524,360, 438,427, 472,418, 556,438, 402,483, 515,470,
+                462,524, 435,558, 564,537, 589,601, 381,594, 493,604, 538,620};
+        private final float[] retreatCandles = {68,269, 141,383, 292,177,
+                1445,86, 859,646, 764,707, 934,686};
+        private final Runnable retreatFrame = () -> {
+            if (isAttachedToWindow() && this.mode == 81) invalidate();
+        };
+        private android.graphics.Bitmap lodgeBackground;
+        private final Path lodgeGlass = new Path();
+        private final Path lodgeFirebox = new Path();
+        private final Path lodgeFlame = new Path();
+        private final Paint lodgePaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
+        private final float[] lodgeLights = {217,136, 171,184, 128,201, 240,177,
+                227,210, 278,261, 218,273, 118,272, 81,322, 169,313, 202,345,
+                294,358, 317,400, 188,434, 82,441, 52,481, 235,499, 320,487,
+                162,514, 53,551, 144,567, 275,551, 366,589, 216,619, 55,584,
+                83,649, 253,652, 330,705, 377,713, 112,712, 186,766,
+                520,222, 539,190, 573,177, 596,190, 621,223, 634,269, 592,294, 543,279,
+                330,357, 370,337, 444,356, 506,359, 541,367, 590,373, 639,375, 718,384,
+                1308,247, 1336,263, 1357,279, 1391,292, 1429,289, 1452,269,
+                1480,232, 1517,242, 1552,235, 1597,229, 1622,215};
+        private final float[] lodgeCandles = {425,343, 461,339, 755,374,
+                455,648, 478,641, 748,608, 764,605, 931,659, 972,672,
+                1002,681, 1047,683, 1026,733};
+        private final Runnable lodgeFrame = () -> {
+            if (isAttachedToWindow() && this.mode == 82) invalidate();
+        };
+        private android.graphics.Bitmap bakeryBackground;
+        private final Paint bakeryPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
+        private final Path bakeryFlame = new Path();
+        private final float[] bakerySnow = new float[330 * 7];
+        // Triples: source-image x/y and color index (gold, red, green, blue).
+        private final float[] bakeryBulbs = {
+                663,52,2, 650,83,0, 659,109,3, 687,123,1, 622,154,0,
+                680,150,2, 716,152,1, 631,173,2, 659,186,2, 718,201,0,
+                605,222,1, 628,233,1, 689,260,2, 663,277,2, 691,295,3,
+                726,298,1, 749,308,3, 756,346,1, 780,347,0, 710,396,3,
+                749,392,2, 767,417,0, 645,419,2, 677,429,0, 548,391,1,
+                540,463,1, 571,470,2, 665,519,3, 705,518,2, 723,529,1,
+                755,513,2, 829,530,2, 797,587,3, 831,580,1, 845,619,1,
+                17,254,2, 23,311,2, 51,342,1, 45,368,2, 55,406,1,
+                285,251,0, 344,239,1, 356,270,3, 374,263,2, 440,274,2,
+                476,278,1, 503,300,2, 581,311,1, 584,342,3, 531,362,1,
+                218,435,2, 287,444,0, 214,399,0, 493,615,2, 608,591,2,
+                1597,403,0, 1610,422,0, 1626,384,0};
+        private final android.graphics.Shader[] bakeryGlows = {
+                new android.graphics.RadialGradient(0, 0, 1, 0xFFFFCA70, 0x00FFCA70, android.graphics.Shader.TileMode.CLAMP),
+                new android.graphics.RadialGradient(0, 0, 1, 0xFFFF4438, 0x00FF4438, android.graphics.Shader.TileMode.CLAMP),
+                new android.graphics.RadialGradient(0, 0, 1, 0xFF6CF5AE, 0x006CF5AE, android.graphics.Shader.TileMode.CLAMP),
+                new android.graphics.RadialGradient(0, 0, 1, 0xFF72BDFF, 0x0072BDFF, android.graphics.Shader.TileMode.CLAMP)
+        };
+        private final float[] bakeryLamps = {195,301, 503,368, 896,509, 1508,519, 1624,323};
+        private final Runnable bakeryFrame = () -> {
+            if (isAttachedToWindow() && this.mode == 83) invalidate();
         };
         private final Paint birthdayPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         private final Paint birthdayLettering = makeBirthdayLettering();
@@ -3824,7 +3913,19 @@ public class MainActivity extends Activity {
         void setMode(int mode) {
             removeCallbacks(villageFrame);
             removeCallbacks(animatedVillageFrame);
+            removeCallbacks(cozyFrame);
+            removeCallbacks(retreatFrame);
+            removeCallbacks(lodgeFrame);
+            removeCallbacks(bakeryFrame);
             this.mode = mode;
+            if (mode == 83) prepareBakeryLane();
+            else bakeryBackground = null;
+            if (mode == 82) prepareForestLodge();
+            else lodgeBackground = null;
+            if (mode == 81) prepareSnowyRetreat();
+            else retreatBackground = null;
+            if (mode == 80) prepareCozyFireplace();
+            else { cozyBackground = null; cozyHearthMask = null; }
             if (mode == 78) prepareChristmasVillage();
             else villageBackground = null;
             if (mode == 79) prepareAnimatedVillage();
@@ -3839,6 +3940,10 @@ public class MainActivity extends Activity {
             super.onAttachedToWindow();
             if (mode == 78) prepareChristmasVillage();
             if (mode == 79) prepareAnimatedVillage();
+            if (mode == 80) prepareCozyFireplace();
+            if (mode == 81) prepareSnowyRetreat();
+            if (mode == 82) prepareForestLodge();
+            if (mode == 83) prepareBakeryLane();
         }
 
         @Override
@@ -3847,6 +3952,15 @@ public class MainActivity extends Activity {
             villageBackground = null;
             removeCallbacks(animatedVillageFrame);
             animatedVillageBackground = null;
+            removeCallbacks(cozyFrame);
+            cozyBackground = null;
+            cozyHearthMask = null;
+            removeCallbacks(retreatFrame);
+            retreatBackground = null;
+            removeCallbacks(lodgeFrame);
+            lodgeBackground = null;
+            removeCallbacks(bakeryFrame);
+            bakeryBackground = null;
             super.onDetachedFromWindow();
         }
 
@@ -4001,6 +4115,14 @@ public class MainActivity extends Activity {
                 drawOrbitClock(canvas, width, height, time);
             } else if (mode == 69) {
                 drawWordClock(canvas, width, height, time);
+            } else if (mode == 83) {
+                drawBakeryLane(canvas, width, height, (now - startedAt) / 1000f);
+            } else if (mode == 82) {
+                drawForestLodge(canvas, width, height, (now - startedAt) / 1000f);
+            } else if (mode == 81) {
+                drawSnowyRetreat(canvas, width, height, (now - startedAt) / 1000f);
+            } else if (mode == 80) {
+                drawCozyFireplace(canvas, width, height, (now - startedAt) / 1000f);
             } else if (mode == 79) {
                 drawAnimatedVillage(canvas, width, height, (now - startedAt) / 1000f);
             } else if (mode == 78) {
@@ -4018,7 +4140,19 @@ public class MainActivity extends Activity {
             }
             drawText(canvas, width, height, now);
 
-            if (mode == 79) {
+            if (mode == 83) {
+                removeCallbacks(bakeryFrame);
+                if (isAttachedToWindow()) postDelayed(bakeryFrame, 33);
+            } else if (mode == 82) {
+                removeCallbacks(lodgeFrame);
+                if (isAttachedToWindow()) postDelayed(lodgeFrame, 33);
+            } else if (mode == 81) {
+                removeCallbacks(retreatFrame);
+                if (isAttachedToWindow()) postDelayed(retreatFrame, 33);
+            } else if (mode == 80) {
+                removeCallbacks(cozyFrame);
+                if (isAttachedToWindow()) postDelayed(cozyFrame, 33);
+            } else if (mode == 79) {
                 removeCallbacks(animatedVillageFrame);
                 if (isAttachedToWindow()) postDelayed(animatedVillageFrame, 33);
             } else if (mode == 78) {
@@ -4837,6 +4971,678 @@ public class MainActivity extends Activity {
             birthdayLettering.setColor(0xFFDABAB5);
             c.drawText("Ever thine, ever mine, ever ours. ❤️", 500, 322, birthdayLettering);
             c.restore();
+        }
+
+        // Build individual inset pane masks once; no snow can cross the wooden mullions.
+        private void lodgePane(float left, float topLeft, float right, float topRight,
+                float bottomRight, float bottomLeft) {
+            lodgeGlass.moveTo(left, topLeft);
+            lodgeGlass.lineTo(right, topRight);
+            lodgeGlass.lineTo(right, bottomRight);
+            lodgeGlass.lineTo(left, bottomLeft);
+            lodgeGlass.close();
+        }
+
+        private void prepareBakeryLane() {
+            if (bakeryBackground != null) return;
+            android.graphics.BitmapFactory.Options options = new android.graphics.BitmapFactory.Options();
+            options.inScaled = false;
+            bakeryBackground = android.graphics.BitmapFactory.decodeResource(
+                    getResources(), R.drawable.christmas_bakery_lane, options);
+            java.util.Random random = new java.util.Random(831937L);
+            for (int i = 0; i < bakerySnow.length; i += 7) {
+                int layer = (i / 7) % 3;
+                bakerySnow[i] = random.nextFloat() * 1759;
+                bakerySnow[i + 1] = random.nextFloat() * 1017;
+                bakerySnow[i + 2] = 8 + layer * 12 + random.nextFloat() * 13;
+                bakerySnow[i + 3] = .45f + layer * .75f + random.nextFloat() * .65f;
+                bakerySnow[i + 4] = 35 + layer * 23 + random.nextFloat() * 45;
+                bakerySnow[i + 5] = random.nextFloat() * 6.283185f;
+                bakerySnow[i + 6] = .11f + random.nextFloat() * .14f;
+            }
+        }
+
+        private void bakeryGlow(Canvas canvas, float x, float y, float rx, float ry,
+                int alpha, int colorIndex) {
+            canvas.save();
+            canvas.translate(x, y);
+            canvas.scale(rx, ry);
+            bakeryPaint.setShader(bakeryGlows[colorIndex]);
+            bakeryPaint.setAlpha(alpha);
+            canvas.drawCircle(0, 0, 1, bakeryPaint);
+            bakeryPaint.setShader(null);
+            bakeryPaint.setAlpha(255);
+            canvas.restore();
+        }
+
+        private void drawBakeryLane(Canvas canvas, float width, float height, float seconds) {
+            if (bakeryBackground == null) return;
+            // One aspect-preserving transform maps all source-image anchors to the screen.
+            float scale = Math.max(width / 1679f, height / 937f);
+            canvas.save();
+            canvas.translate((width - 1679 * scale) * .5f, (height - 937 * scale) * .5f);
+            canvas.scale(scale, scale);
+            bakeryPaint.setColor(Color.WHITE);
+            canvas.drawBitmap(bakeryBackground, 0, 0, bakeryPaint);
+            for (int i = 0; i < bakeryBulbs.length; i += 3) {
+                float pulse = cozyNoise(seconds * (.19f + (i % 11) * .019f), i + 1100);
+                bakeryGlow(canvas, bakeryBulbs[i], bakeryBulbs[i + 1], 7, 8,
+                        (int) (12 + 40 * pulse), (int) bakeryBulbs[i + 2]);
+            }
+            for (int i = 0; i < bakeryLamps.length; i += 2) {
+                float pulse = cozyNoise(seconds * .37f, i + 1300);
+                bakeryGlow(canvas, bakeryLamps[i], bakeryLamps[i + 1], 25, 32,
+                        (int) (10 + 8 * pulse), 0);
+            }
+            float candle = cozyNoise(seconds * 2.1f, 1400);
+            float sway = (cozyNoise(seconds * 1.6f, 1401) - .5f) * 1.4f;
+            bakeryGlow(canvas, 302, 722, 15, 23, (int) (20 + candle * 20), 0);
+            bakeryFlame.rewind();
+            bakeryFlame.moveTo(300.5f, 726);
+            bakeryFlame.cubicTo(299, 722, 302 + sway, 719, 302 + sway, 716 - candle);
+            bakeryFlame.cubicTo(305, 720, 305, 725, 300.5f, 726);
+            bakeryPaint.setColor(0xB2FFF0CC);
+            canvas.drawPath(bakeryFlame, bakeryPaint);
+            // Small translucent wisps complement the steam already in the photograph.
+            for (int cup = 0; cup < 2; cup++) {
+                for (int i = 0; i < 6; i++) {
+                    float age = (seconds * (.075f + cup * .009f) + i / 6f + cup * .37f) % 1;
+                    float x = (cup == 0 ? 254 : 441) + age * 7
+                            + 4 * (float) Math.sin(age * 5 + seconds * .24f + cup * 2);
+                    float y = (cup == 0 ? 719 : 711) - age * 46;
+                    retreatGlow(canvas, x, y, 2 + age * 5, 5 + age * 8,
+                            (int) (14 * Math.sin(age * Math.PI)), false);
+                }
+            }
+            // Independent randomized particles; wraps occur beyond the image edges.
+            // The slow wind and shorter gust component alter drift without position jumps.
+            float wind = 29 * (float) Math.sin(seconds * .061f)
+                    + 8 * (float) Math.sin(seconds * .19f) + seconds * 1.3f;
+            for (int layer = 0; layer < 3; layer++) {
+                for (int i = layer * 7; i < bakerySnow.length; i += 21) {
+                    float phase = bakerySnow[i + 5];
+                    float y = (bakerySnow[i + 1] + seconds * bakerySnow[i + 2]) % 1017 - 40;
+                    float x = bakerySnow[i] + wind * (.65f + layer * .55f)
+                            + (5 + layer * 4) * (float) Math.sin(seconds * bakerySnow[i + 6] + phase);
+                    x = ((x % 1759) + 1759) % 1759 - 40;
+                    float radius = bakerySnow[i + 3];
+                    bakeryPaint.setColor(Color.WHITE);
+                    bakeryPaint.setAlpha((int) bakerySnow[i + 4]);
+                    canvas.drawCircle(x, y, radius, bakeryPaint);
+                    if (layer == 2) {
+                        // Two low-opacity halos give foreground softness without blur filters.
+                        bakeryPaint.setAlpha(16);
+                        canvas.drawCircle(x, y, radius * 1.6f, bakeryPaint);
+                        bakeryPaint.setAlpha(7);
+                        canvas.drawCircle(x, y, radius * 2.3f, bakeryPaint);
+                    }
+                }
+            }
+            bakeryPaint.setAlpha(255);
+            canvas.restore();
+        }
+
+        private void prepareForestLodge() {
+            if (lodgeBackground != null) return;
+            android.graphics.BitmapFactory.Options options = new android.graphics.BitmapFactory.Options();
+            options.inScaled = false;
+            lodgeBackground = android.graphics.BitmapFactory.decodeResource(
+                    getResources(), R.drawable.christmas_forest_lodge, options);
+            lodgeGlass.rewind();
+            // Left window: conservative clear area above the tree's outermost branches.
+            lodgePane(27, 94, 125, 114, 162, 215);
+            lodgePane(27, 234, 67, 238, 274, 318);
+            // Narrow window beside the chimney, separated by its crossbars.
+            lodgePane(750, 268, 795, 279, 334, 329);
+            lodgePane(803, 280, 832, 286, 339, 335);
+            lodgePane(803, 348, 832, 351, 463, 462);
+            lodgePane(751, 431, 795, 431, 462, 462);
+            lodgePane(752, 476, 795, 476, 520, 533);
+            lodgePane(804, 476, 832, 476, 507, 512);
+            // Center window, nine panes with sloping header and clear frame margins.
+            float[] edges = {953, 1000, 1008, 1060, 1068, 1125, 1133, 1183};
+            for (int col = 0; col < 4; col++) {
+                float l = edges[col * 2], r = edges[col * 2 + 1];
+                lodgePane(l, 280 - (l - 953) * .15f, r, 280 - (r - 953) * .15f, 360, 367);
+                lodgePane(l, 378, r, 372, 450, 450);
+                lodgePane(l, 463, r, 463, 533, 529);
+            }
+            // Large right window. Every pane has its own inset outline.
+            float[] rightEdges = {1251, 1334, 1343, 1447, 1457, 1547, 1557, 1644};
+            for (int col = 0; col < 4; col++) {
+                float l = rightEdges[col * 2], r = rightEdges[col * 2 + 1];
+                lodgePane(l, 235 - (l - 1251) * .15f, r, 235 - (r - 1251) * .15f,
+                        348 - (r - 1251) * .05f, 348 - (l - 1251) * .05f);
+                lodgePane(l, 359 - (l - 1251) * .05f, r, 359 - (r - 1251) * .05f, 449, 449);
+                lodgePane(l, 464, r, 464, 545 + (r - 1251) * .05f, 545 + (l - 1251) * .05f);
+            }
+            // Upper triangular glazing, following the roof and diagonal structural beam.
+            lodgePane(954, 177, 997, 134, 181, 191);
+            lodgePane(1005, 126, 1057, 74, 100, 117);
+            lodgePane(1005, 125, 1057, 108, 170, 181);
+            lodgePane(1067, 64, 1123, 8, 80, 98);
+            lodgePane(1067, 108, 1123, 89, 132, 166);
+            lodgePane(1133, 0, 1185, 0, 62, 78);
+            lodgePane(1133, 145, 1185, 101, 145, 156);
+            // Upper-right window, above the main horizontal beam.
+            lodgePane(1249, 0, 1335, 0, 18, 39);
+            lodgePane(1249, 49, 1335, 27, 108, 127);
+            lodgePane(1344, 0, 1448, 0, 85, 106);
+            lodgePane(1459, 0, 1550, 0, 64, 83);
+            lodgePane(1560, 0, 1651, 0, 40, 61);
+            Path occlusion = new Path();
+            // Floor lamp, flowers, and foreground furniture remain completely stationary.
+            occlusion.moveTo(901, 451);
+            occlusion.lineTo(926, 389);
+            occlusion.lineTo(961, 389);
+            occlusion.lineTo(987, 451);
+            occlusion.close();
+            occlusion.addRect(935, 445, 950, 540, Path.Direction.CW);
+            occlusion.addRect(808, 505, 841, 544, Path.Direction.CW);
+            // Conservative exclusion for the diagonal timber crossing the upper glazing.
+            occlusion.moveTo(1010, 194);
+            occlusion.lineTo(1191, 57);
+            occlusion.lineTo(1191, 100);
+            occlusion.lineTo(1060, 187);
+            occlusion.close();
+            occlusion.moveTo(1245, 38);
+            occlusion.lineTo(1404, 0);
+            occlusion.lineTo(1438, 0);
+            occlusion.lineTo(1245, 50);
+            occlusion.close();
+            lodgeGlass.op(occlusion, Path.Op.DIFFERENCE);
+            // Canonical fire coordinates transformed into this scene's opening at draw time.
+            lodgeFirebox.rewind();
+            lodgeFirebox.addRect(225, 495, 344, 610, Path.Direction.CW);
+        }
+
+        private void drawForestLodge(Canvas canvas, float width, float height, float seconds) {
+            if (lodgeBackground == null) return;
+            float scale = Math.max(width / 1672f, height / 941f);
+            canvas.save();
+            canvas.translate((width - 1672 * scale) * .5f, (height - 941 * scale) * .5f);
+            canvas.scale(scale, scale);
+            lodgePaint.setColor(Color.WHITE);
+            canvas.drawBitmap(lodgeBackground, 0, 0, lodgePaint);
+            canvas.save();
+            canvas.clipPath(lodgeGlass);
+            for (int i = 0; i < 230; i++) {
+                int layer = i % 3;
+                float y = (i * 137.51f + seconds * (10 + layer * 10 + i % 9)) % 620 - 25;
+                // Continuous wind changes direction smoothly, without resetting particles.
+                float wind = 25 * (float) Math.sin(seconds * .065f) + seconds * 1.5f;
+                float x = ((i * 271.37f + wind * (1 + layer * .4f)
+                        + 8 * (float) Math.sin(seconds * .19f + i)) % 1720 + 1720) % 1720 - 24;
+                lodgePaint.setColor(Color.WHITE);
+                lodgePaint.setAlpha(48 + layer * 30 + i % 25);
+                float radius = .65f + layer * .65f;
+                canvas.drawCircle(x, y, radius, lodgePaint);
+                if (layer == 2) {
+                    lodgePaint.setAlpha(17);
+                    canvas.drawCircle(x, y, radius * 1.8f, lodgePaint);
+                }
+            }
+            lodgePaint.setAlpha(255);
+            canvas.restore();
+            float warmth = cozyNoise(seconds * 1.7f, 801);
+            retreatGlow(canvas, 477, 577, 34, 81, (int) (8 + warmth * 8), true);
+            retreatGlow(canvas, 684, 577, 32, 80, (int) (8 + warmth * 8), true);
+            retreatGlow(canvas, 590, 687, 160, 26, (int) (8 + warmth * 12), true);
+            retreatGlow(canvas, 561, 770, 95, 23, (int) (5 + warmth * 8), true);
+            canvas.save();
+            canvas.translate(495, 520);
+            canvas.scale(162f / 119f, 128f / 115f);
+            canvas.translate(-225, -495);
+            canvas.save();
+            canvas.clipPath(lodgeFirebox);
+            // Opaque localized firebox replacement eliminates the baked-in flame silhouette.
+            // The original glass border stays untouched; original logs are restored below.
+            lodgePaint.setShader(retreatFireBed);
+            canvas.drawRect(222, 492, 346, 610, lodgePaint);
+            lodgePaint.setShader(null);
+            retreatGlow(canvas, 280, 584, 63, 79, (int) (55 + 20 * warmth), true);
+            for (int i = 0; i < 13; i++) {
+                float age = (seconds * (.32f + i % 4 * .037f) + i * .618034f) % 1;
+                float envelope = (float) Math.sin(age * Math.PI);
+                float flameHeight = (34 + 53 * cozyNoise(seconds * 1.8f, i + 520)) * (.55f + .45f * envelope);
+                float bend = (cozyNoise(seconds * 2.4f, i + 550) - .5f) * 1.6f;
+                canvas.save();
+                canvas.translate(231 + i * 8.5f, 597 - i % 3 * 3);
+                canvas.scale(5 + 4 * cozyNoise(seconds * 2, i + 580), flameHeight);
+                lodgeFlame.rewind();
+                lodgeFlame.moveTo(-.8f, 0);
+                lodgeFlame.cubicTo(-1.3f, -.23f, .4f + bend, -.4f, -.4f, -.61f);
+                lodgeFlame.cubicTo(-.7f, -.78f, bend, -.86f, bend, -1);
+                lodgeFlame.cubicTo(.6f + bend, -.72f, -.2f, -.5f, .6f, -.34f);
+                lodgeFlame.cubicTo(1.3f, -.12f, .9f, -.04f, .8f, 0);
+                lodgeFlame.close();
+                lodgePaint.setShader(cozyFlameGradient);
+                lodgePaint.setAlpha((int) (200 * envelope));
+                canvas.drawPath(lodgeFlame, lodgePaint);
+                canvas.scale(.4f, .62f);
+                lodgePaint.setAlpha((int) (235 * envelope));
+                canvas.drawPath(lodgeFlame, lodgePaint);
+                lodgePaint.setShader(null);
+                lodgePaint.setAlpha(255);
+                canvas.restore();
+            }
+            // Retain the photographed log texture without retaining flames above it.
+            canvas.save();
+            lodgeFlame.rewind();
+            lodgeFlame.moveTo(225, 594);
+            lodgeFlame.lineTo(253, 578);
+            lodgeFlame.lineTo(274, 588);
+            lodgeFlame.lineTo(289, 575);
+            lodgeFlame.lineTo(324, 593);
+            lodgeFlame.lineTo(344, 602);
+            lodgeFlame.lineTo(344, 610);
+            lodgeFlame.lineTo(225, 610);
+            lodgeFlame.close();
+            canvas.clipPath(lodgeFlame);
+            canvas.translate(225, 495);
+            canvas.scale(119f / 162f, 115f / 128f);
+            canvas.translate(-495, -520);
+            canvas.drawBitmap(lodgeBackground, 0, 0, lodgePaint);
+            canvas.restore();
+            for (int i = 0; i < 9; i++) {
+                retreatGlow(canvas, 231 + i * 12, 601 - i % 3 * 3, 4, 2,
+                        (int) (25 + 65 * cozyNoise(seconds * 2.3f, i + 600)), true);
+            }
+            for (int i = 0; i < 3; i++) {
+                float age = (seconds * .19f + i * .333f) % 1;
+                lodgePaint.setColor(0xFFFFD596);
+                lodgePaint.setAlpha((int) (120 * Math.sin(age * Math.PI)));
+                float x = 249 + i * 25 + 3 * (float) Math.sin(age * 8 + i);
+                canvas.drawOval(x, 590 - age * 85, x + 1, 592 - age * 85, lodgePaint);
+            }
+            lodgePaint.setAlpha(255);
+            canvas.restore();
+            canvas.restore();
+            for (int i = 0; i < lodgeLights.length; i += 2) {
+                float pulse = cozyNoise(seconds * (.22f + i % 7 * .025f), i + 840);
+                retreatGlow(canvas, lodgeLights[i], lodgeLights[i + 1], 7, 8,
+                        (int) (12 + 35 * pulse), true);
+            }
+            retreatGlow(canvas, 191, 39, 27, 33,
+                    (int) (16 + 18 * cozyNoise(seconds * .29f, 920)), true);
+            for (int i = 0; i < lodgeCandles.length; i += 2) {
+                float pulse = cozyNoise(seconds * 2.2f, i + 950);
+                float x = lodgeCandles[i], y = lodgeCandles[i + 1];
+                float sway = (cozyNoise(seconds * 1.6f, i + 980) - .5f) * 1.5f;
+                retreatGlow(canvas, x, y, 10, 15, (int) (17 + pulse * 22), true);
+                lodgeFlame.rewind();
+                lodgeFlame.moveTo(x - 1.2f, y + 3);
+                lodgeFlame.cubicTo(x - 3, y, x + sway, y - 3, x + sway, y - 6 - pulse);
+                lodgeFlame.cubicTo(x + 2.6f, y - 1, x + 2, y + 3, x - 1.2f, y + 3);
+                lodgePaint.setColor(0xACFFF1CD);
+                canvas.drawPath(lodgeFlame, lodgePaint);
+            }
+            retreatGlow(canvas, 1009, 760, 77, 16,
+                    (int) (6 + 5 * cozyNoise(seconds * 1.4f, 999)), true);
+            lodgePaint.setAlpha(255);
+            canvas.restore();
+        }
+
+        private void prepareSnowyRetreat() {
+            if (retreatBackground != null) return;
+            android.graphics.BitmapFactory.Options options = new android.graphics.BitmapFactory.Options();
+            options.inScaled = false;
+            retreatBackground = android.graphics.BitmapFactory.decodeResource(
+                    getResources(), R.drawable.snowy_christmas_retreat, options);
+            // Cached conservative glass silhouette excludes tree tips, sill and sofa.
+            // Coordinates are relative to the original artwork, sharing its screen transform.
+            retreatWindow.rewind();
+            retreatWindow.moveTo(510, 66);
+            retreatWindow.lineTo(944, 0);
+            retreatWindow.lineTo(1434, 0);
+            retreatWindow.lineTo(1434, 507);
+            retreatWindow.lineTo(1360, 514);
+            retreatWindow.lineTo(1326, 537);
+            retreatWindow.lineTo(1300, 591);
+            retreatWindow.lineTo(643, 568);
+            retreatWindow.lineTo(628, 515);
+            retreatWindow.lineTo(610, 454);
+            retreatWindow.lineTo(583, 397);
+            retreatWindow.lineTo(567, 342);
+            retreatWindow.lineTo(540, 285);
+            retreatWindow.lineTo(510, 230);
+            retreatWindow.close();
+            Path foreground = new Path();
+            // Keep snow off the entire flower arrangement, including thin berry stems.
+            foreground.moveTo(624, 490);
+            foreground.lineTo(776, 481);
+            foreground.lineTo(839, 547);
+            foreground.lineTo(820, 603);
+            foreground.lineTo(660, 604);
+            foreground.close();
+            foreground.addRect(1397, 0, 1492, 181, Path.Direction.CW);
+            // The table lantern's cap overlaps the very bottom of the outdoor view.
+            foreground.addRect(808, 527, 914, 605, Path.Direction.CW);
+            retreatWindow.op(foreground, Path.Op.DIFFERENCE);
+            retreatStove.rewind();
+            retreatStove.moveTo(225, 506);
+            retreatStove.cubicTo(253, 493, 316, 492, 344, 504);
+            retreatStove.lineTo(344, 601);
+            retreatStove.lineTo(225, 609);
+            retreatStove.close();
+        }
+
+        private void retreatGlow(Canvas canvas, float x, float y, float rx, float ry,
+                int alpha, boolean warm) {
+            canvas.save();
+            canvas.translate(x, y);
+            canvas.scale(rx, ry);
+            retreatPaint.setShader(warm ? hauntedWarmth : hauntedMist);
+            retreatPaint.setAlpha(alpha);
+            canvas.drawCircle(0, 0, 1, retreatPaint);
+            retreatPaint.setShader(null);
+            retreatPaint.setAlpha(255);
+            canvas.restore();
+        }
+
+        private void drawSnowyRetreat(Canvas canvas, float width, float height, float seconds) {
+            if (retreatBackground == null) return;
+            float scale = Math.max(width / 1672f, height / 941f);
+            canvas.save();
+            canvas.translate((width - 1672 * scale) * .5f, (height - 941 * scale) * .5f);
+            canvas.scale(scale, scale);
+            retreatPaint.setColor(Color.WHITE);
+            canvas.drawBitmap(retreatBackground, 0, 0, retreatPaint);
+            canvas.save();
+            canvas.clipPath(retreatWindow);
+            // Modest additions to the already snowy photograph, with three depth layers.
+            for (int i = 0; i < 190; i++) {
+                int layer = i % 3;
+                float speed = 10 + layer * 11 + (i % 11) * .75f;
+                float y = (i * 139.73f + seconds * speed) % 650 - 25;
+                float drift = seconds * (3 + layer * 2) + 9 * (float) Math.sin(seconds * (.17f + i % 5 * .013f) + i);
+                float x = 480 + ((i * 217.31f + drift) % 1020);
+                float radius = .65f + layer * .65f + (i % 4) * .12f;
+                retreatPaint.setColor(Color.WHITE);
+                retreatPaint.setAlpha(50 + layer * 35 + i % 30);
+                canvas.drawCircle(x, y, radius, retreatPaint);
+                if (layer == 2) {
+                    retreatPaint.setAlpha(20);
+                    canvas.drawCircle(x, y, radius * 1.8f, retreatPaint);
+                }
+            }
+            retreatPaint.setAlpha(255);
+            canvas.restore();
+
+            float warmth = cozyNoise(seconds * 1.6f, 501);
+            retreatGlow(canvas, 216, 560, 25, 83, (int) (7 + 7 * warmth), true);
+            retreatGlow(canvas, 352, 555, 26, 80, (int) (6 + 7 * warmth), true);
+            retreatGlow(canvas, 325, 731, 94, 18, (int) (5 + 8 * warmth), true);
+            canvas.save();
+            canvas.clipPath(retreatStove);
+            // Opaque localized firebox replacement eliminates the baked-in flame silhouette.
+            // The original glass border stays untouched; original logs are restored below.
+            retreatPaint.setShader(retreatFireBed);
+            canvas.drawRect(222, 492, 346, 610, retreatPaint);
+            retreatPaint.setShader(null);
+            retreatGlow(canvas, 280, 584, 63, 79, (int) (55 + 20 * warmth), true);
+            for (int i = 0; i < 13; i++) {
+                float age = (seconds * (.32f + i % 4 * .037f) + i * .618034f) % 1;
+                float envelope = (float) Math.sin(age * Math.PI);
+                float flameHeight = (34 + 53 * cozyNoise(seconds * 1.8f, i + 520)) * (.55f + .45f * envelope);
+                float bend = (cozyNoise(seconds * 2.4f, i + 550) - .5f) * 1.6f;
+                canvas.save();
+                canvas.translate(231 + i * 8.5f, 597 - i % 3 * 3);
+                canvas.scale(5 + 4 * cozyNoise(seconds * 2, i + 580), flameHeight);
+                retreatFlame.rewind();
+                retreatFlame.moveTo(-.8f, 0);
+                retreatFlame.cubicTo(-1.3f, -.23f, .4f + bend, -.4f, -.4f, -.61f);
+                retreatFlame.cubicTo(-.7f, -.78f, bend, -.86f, bend, -1);
+                retreatFlame.cubicTo(.6f + bend, -.72f, -.2f, -.5f, .6f, -.34f);
+                retreatFlame.cubicTo(1.3f, -.12f, .9f, -.04f, .8f, 0);
+                retreatFlame.close();
+                retreatPaint.setShader(cozyFlameGradient);
+                retreatPaint.setAlpha((int) (200 * envelope));
+                canvas.drawPath(retreatFlame, retreatPaint);
+                canvas.scale(.4f, .62f);
+                retreatPaint.setAlpha((int) (235 * envelope));
+                canvas.drawPath(retreatFlame, retreatPaint);
+                retreatPaint.setShader(null);
+                retreatPaint.setAlpha(255);
+                canvas.restore();
+            }
+            // Retain the photographed log texture without retaining flames above it.
+            canvas.save();
+            retreatFlame.rewind();
+            retreatFlame.moveTo(225, 594);
+            retreatFlame.lineTo(253, 578);
+            retreatFlame.lineTo(274, 588);
+            retreatFlame.lineTo(289, 575);
+            retreatFlame.lineTo(324, 593);
+            retreatFlame.lineTo(344, 602);
+            retreatFlame.lineTo(344, 610);
+            retreatFlame.lineTo(225, 610);
+            retreatFlame.close();
+            canvas.clipPath(retreatFlame);
+            canvas.drawBitmap(retreatBackground, 0, 0, retreatPaint);
+            canvas.restore();
+            for (int i = 0; i < 9; i++) {
+                retreatGlow(canvas, 231 + i * 12, 601 - i % 3 * 3, 4, 2,
+                        (int) (25 + 65 * cozyNoise(seconds * 2.3f, i + 600)), true);
+            }
+            for (int i = 0; i < 3; i++) {
+                float age = (seconds * .19f + i * .333f) % 1;
+                retreatPaint.setColor(0xFFFFD596);
+                retreatPaint.setAlpha((int) (120 * Math.sin(age * Math.PI)));
+                float x = 249 + i * 25 + 3 * (float) Math.sin(age * 8 + i);
+                canvas.drawOval(x, 590 - age * 85, x + 1, 592 - age * 85, retreatPaint);
+            }
+            retreatPaint.setAlpha(255);
+            canvas.restore();
+            for (int i = 0; i < retreatLights.length; i += 2) {
+                float pulse = cozyNoise(seconds * (.24f + i % 5 * .03f), i + 640);
+                retreatGlow(canvas, retreatLights[i], retreatLights[i + 1], 7, 8,
+                        (int) (12 + 35 * pulse), true);
+            }
+            for (int i = 0; i < retreatCandles.length; i += 2) {
+                float pulse = cozyNoise(seconds * 2.1f, i + 700);
+                float x = retreatCandles[i], y = retreatCandles[i + 1];
+                float sway = (cozyNoise(seconds * 1.7f, i + 730) - .5f) * 1.5f;
+                retreatGlow(canvas, x, y, 11, 16, (int) (19 + 19 * pulse), true);
+                retreatFlame.rewind();
+                retreatFlame.moveTo(x - 1.2f, y + 3);
+                retreatFlame.cubicTo(x - 3, y, x + sway, y - 3, x + sway, y - 6 - pulse);
+                retreatFlame.cubicTo(x + 2.6f, y - 1, x + 2, y + 3, x - 1.2f, y + 3);
+                retreatPaint.setColor(0xB0FFF1CD);
+                canvas.drawPath(retreatFlame, retreatPaint);
+            }
+            // Wisps grow, drift, and fade above the mug without moving the cup itself.
+            for (int i = 0; i < 7; i++) {
+                float age = (seconds * .08f + i / 7f) % 1;
+                float x = 669 + age * 10 + 5 * (float) Math.sin(age * 6 + seconds * .23f);
+                retreatGlow(canvas, x, 685 - age * 58, 3 + age * 6, 7 + age * 8,
+                        (int) (15 * Math.sin(age * Math.PI)), false);
+            }
+            retreatPaint.setAlpha(255);
+            canvas.restore();
+        }
+
+        private void prepareCozyFireplace() {
+            if (cozyBackground != null) return;
+            android.graphics.BitmapFactory.Options options = new android.graphics.BitmapFactory.Options();
+            options.inScaled = false;
+            cozyBackground = android.graphics.BitmapFactory.decodeResource(
+                    getResources(), R.drawable.cozy_christmas_fireplace, options);
+            // All geometry is in the supplied 1672 x 940 artwork space.
+            cozyOpening.rewind();
+            cozyOpening.moveTo(337, 547);
+            cozyOpening.lineTo(632, 552);
+            cozyOpening.lineTo(628, 780);
+            cozyOpening.lineTo(333, 778);
+            cozyOpening.close();
+            cozyLogs.rewind();
+            cozyLogs.moveTo(335, 764);
+            cozyLogs.lineTo(365, 740);
+            cozyLogs.lineTo(385, 720);
+            cozyLogs.lineTo(411, 727);
+            cozyLogs.lineTo(429, 720);
+            cozyLogs.lineTo(474, 714);
+            cozyLogs.lineTo(505, 710);
+            cozyLogs.lineTo(538, 718);
+            cozyLogs.lineTo(560, 733);
+            cozyLogs.lineTo(588, 738);
+            cozyLogs.lineTo(628, 762);
+            cozyLogs.lineTo(628, 783);
+            cozyLogs.lineTo(333, 783);
+            cozyLogs.close();
+
+            // Reusable localized backdrop suppresses photographed flames. Retain texture
+            // sampled from unlit masonry; feather the boundary into the original interior.
+            cozyHearthMask = android.graphics.Bitmap.createBitmap(270, 198,
+                    android.graphics.Bitmap.Config.ARGB_8888);
+            Canvas mask = new Canvas(cozyHearthMask);
+            Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
+            mask.drawBitmap(cozyBackground, new android.graphics.Rect(374, 550, 580, 566),
+                    new RectF(0, 0, 270, 198), paint);
+            paint.setColor(0xA51A0804);
+            mask.drawRect(0, 0, 270, 198, paint);
+            paint.setColor(0x60472B1B);
+            paint.setStrokeWidth(1.2f);
+            for (int row = 0; row < 11; row++) {
+                float y = row * 19;
+                mask.drawLine(0, y, 270, y, paint);
+                for (int col = 0; col < 6; col++) {
+                    float x = col * 54 + (row % 2) * 27;
+                    mask.drawLine(x, y, x, y + 19, paint);
+                }
+            }
+            paint.setShader(new android.graphics.RadialGradient(0, 0, 1,
+                    new int[]{0xFF000000, 0xFF000000, 0x00000000},
+                    new float[]{0, .76f, 1}, android.graphics.Shader.TileMode.CLAMP));
+            paint.setAlpha(255);
+            paint.setXfermode(new android.graphics.PorterDuffXfermode(android.graphics.PorterDuff.Mode.DST_IN));
+            mask.save();
+            mask.translate(135, 112);
+            mask.scale(135, 142);
+            mask.drawRect(-2, -2, 2, 2, paint);
+            mask.restore();
+        }
+
+        // Smooth deterministic value noise: no random objects or per-frame buffers.
+        private float cozyNoise(float time, int seed) {
+            int cell = (int) Math.floor(time);
+            float fraction = time - cell;
+            fraction = fraction * fraction * (3 - 2 * fraction);
+            double a = Math.sin(cell * 127.1 + seed * 311.7) * 43758.5453;
+            double b = Math.sin((cell + 1) * 127.1 + seed * 311.7) * 43758.5453;
+            float first = (float) (a - Math.floor(a));
+            return first + ((float) (b - Math.floor(b)) - first) * fraction;
+        }
+
+        private void cozyGlow(Canvas canvas, float x, float y, float rx, float ry, int alpha) {
+            canvas.save();
+            canvas.translate(x, y);
+            canvas.scale(rx, ry);
+            cozyPaint.setShader(hauntedWarmth);
+            cozyPaint.setAlpha(alpha);
+            canvas.drawCircle(0, 0, 1, cozyPaint);
+            cozyPaint.setShader(null);
+            cozyPaint.setAlpha(255);
+            canvas.restore();
+        }
+
+        private void drawCozyFireplace(Canvas canvas, float width, float height, float seconds) {
+            if (cozyBackground == null || cozyHearthMask == null) return;
+            float scale = Math.max(width / 1672f, height / 940f);
+            canvas.save();
+            canvas.translate((width - 1672 * scale) * .5f, (height - 940 * scale) * .5f);
+            canvas.scale(scale, scale);
+            cozyPaint.setColor(Color.WHITE);
+            canvas.drawBitmap(cozyBackground, 0, 0, cozyPaint);
+            float warmth = cozyNoise(seconds * 1.7f, 81);
+            // Low-opacity reflections on the stone, separate from the clipped fire itself.
+            cozyGlow(canvas, 319, 672, 48, 126, (int) (9 + warmth * 12));
+            cozyGlow(canvas, 659, 677, 49, 124, (int) (8 + warmth * 10));
+            cozyGlow(canvas, 485, 808, 193, 36, (int) (8 + warmth * 13));
+            canvas.save();
+            canvas.clipPath(cozyOpening);
+            canvas.drawBitmap(cozyHearthMask, 350, 546, cozyPaint);
+            cozyGlow(canvas, 481, 713, 141, 116, (int) (42 + warmth * 25));
+            // Overlapping curved ribbons have independent lifetimes and noisy lateral motion.
+            // Each fades at both ends of its lifetime; no visible reset at the wrap boundary.
+            for (int i = 0; i < 19; i++) {
+                float age = (seconds * (.26f + (i % 5) * .031f) + i * .618034f) % 1f;
+                float envelope = (float) Math.sin(age * Math.PI);
+                float noise = cozyNoise(seconds * 2.1f, i);
+                float baseX = 384 + i * 10.1f;
+                float baseY = 737 - (i % 4) * 5;
+                float flameHeight = (65 + 100 * cozyNoise(seconds * 1.3f, i + 30))
+                        * (.48f + .52f * envelope);
+                float flameWidth = 9 + 13 * noise;
+                float bend = (cozyNoise(seconds * 1.8f, i + 90) - .5f) * 42;
+                canvas.save();
+                canvas.translate(baseX, baseY);
+                canvas.scale(flameWidth, flameHeight);
+                cozyFlame.rewind();
+                cozyFlame.moveTo(-.8f, 0);
+                cozyFlame.cubicTo(-1.3f, -.2f, .25f + bend / flameWidth, -.38f, -.55f, -.57f);
+                cozyFlame.cubicTo(-.8f, -.73f, bend / flameWidth, -.85f, bend / flameWidth, -1);
+                cozyFlame.cubicTo(.6f + bend / flameWidth, -.72f, -.25f, -.54f, .65f, -.37f);
+                cozyFlame.cubicTo(1.3f, -.18f, 1, -.07f, .8f, 0);
+                cozyFlame.close();
+                cozyPaint.setShader(cozyFlameGradient);
+                cozyPaint.setAlpha((int) (170 * envelope));
+                canvas.drawPath(cozyFlame, cozyPaint);
+                canvas.scale(.38f, .59f);
+                cozyPaint.setAlpha((int) (215 * envelope));
+                canvas.drawPath(cozyFlame, cozyPaint);
+                cozyPaint.setShader(null);
+                cozyPaint.setAlpha(255);
+                canvas.restore();
+            }
+            // Restore the photographed foreground logs over the fire, retaining their texture.
+            canvas.save();
+            canvas.clipPath(cozyLogs);
+            canvas.drawBitmap(cozyBackground, 0, 0, cozyPaint);
+            canvas.restore();
+            for (int i = 0; i < 15; i++) {
+                float pulse = cozyNoise(seconds * 2 + i, i + 140);
+                cozyGlow(canvas, 376 + i * 14, 766 + (i % 3) * 4, 6, 3,
+                        (int) (20 + pulse * 85));
+            }
+            for (int i = 0; i < 5; i++) {
+                float age = (seconds * (.13f + i * .017f) + i * .237f) % 1;
+                float x = 403 + i * 34 + 8 * (float) Math.sin(age * 7 + i);
+                cozyPaint.setColor(0xFFFFCB71);
+                cozyPaint.setAlpha((int) (125 * Math.sin(age * Math.PI)));
+                canvas.drawOval(x, 741 - age * 158, x + 1.3f, 744 - age * 158, cozyPaint);
+            }
+            cozyPaint.setAlpha(255);
+            canvas.restore();
+            for (int i = 0; i < cozyBulbs.length; i += 2) {
+                float pulse = cozyNoise(seconds * (.22f + (i % 7) * .025f), i + 200);
+                cozyGlow(canvas, cozyBulbs[i], cozyBulbs[i + 1], 7, 8, (int) (10 + 46 * pulse));
+                // Rare, softly appearing glints are anchored to photographed bulbs.
+                float glint = Math.max(0, (pulse - .86f) / .14f);
+                if (glint > 0) {
+                    cozyPaint.setColor(0xFFFFDEA0);
+                    cozyPaint.setAlpha((int) (90 * glint));
+                    canvas.drawOval(cozyBulbs[i] - .6f, cozyBulbs[i + 1] - 5,
+                            cozyBulbs[i] + .6f, cozyBulbs[i + 1] + 5, cozyPaint);
+                    canvas.drawOval(cozyBulbs[i] - 4, cozyBulbs[i + 1] - .5f,
+                            cozyBulbs[i] + 4, cozyBulbs[i + 1] + .5f, cozyPaint);
+                    cozyPaint.setAlpha(255);
+                }
+            }
+            for (int i = 0; i < cozyCandles.length; i += 2) {
+                float pulse = cozyNoise(seconds * 2.3f, i + 300);
+                float sway = (cozyNoise(seconds * 1.4f, i + 350) - .5f) * 2;
+                float x = cozyCandles[i], y = cozyCandles[i + 1];
+                cozyGlow(canvas, x, y, 13, 20, (int) (23 + 22 * pulse));
+                cozyFlame.rewind();
+                cozyFlame.moveTo(x - 1.6f, y + 4);
+                cozyFlame.cubicTo(x - 4, y, x + sway, y - 4, x + sway, y - 7 - pulse * 2);
+                cozyFlame.cubicTo(x + 3, y - 2, x + 3, y + 3, x - 1.6f, y + 4);
+                cozyPaint.setColor(0xB8FFF1C2);
+                canvas.drawPath(cozyFlame, cozyPaint);
+            }
+            cozyPaint.setAlpha(255);
+            canvas.restore();
         }
 
         private void prepareAnimatedVillage() {

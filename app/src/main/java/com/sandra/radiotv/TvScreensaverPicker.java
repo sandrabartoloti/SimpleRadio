@@ -203,7 +203,7 @@ final class TvScreensaverPicker {
     private static int group(int mode) {
         if (mode == 41 || (mode >= 63 && mode <= 70)) return 0;
         if (mode >= 71 && mode <= 76) return 2;
-        if (mode == 10 || mode == 11 || (mode >= 18 && mode <= 23) || mode == 32 || mode == 77 || mode == 78 || mode == 79) return 3;
+        if (mode == 10 || mode == 11 || (mode >= 18 && mode <= 23) || mode == 32 || mode == 77 || mode == 78 || mode == 79 || mode == 80 || mode == 81 || mode == 82 || mode == 83) return 3;
         if (mode == 5 || mode == 9 || (mode >= 12 && mode <= 15) || (mode >= 24 && mode <= 27)
                 || mode == 30 || (mode >= 33 && mode <= 35) || mode == 39
                 || (mode >= 42 && mode <= 52) || mode == 58 || (mode >= 59 && mode <= 62)) return 1;
